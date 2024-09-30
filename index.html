@@ -144,7 +144,7 @@
             .then(images => {
                 
                 const items = document.getElementsByClassName("items")
-                array.forEach(images => {
+                images.forEach(images => {
                      // Create the <div> element for each item
                         const itemDiv = document.createElement('div');
                     itemDiv.classList.add('item');
