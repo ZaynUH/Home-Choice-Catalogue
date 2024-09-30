@@ -87,20 +87,21 @@
             }
         });
 
-        //  For controlling the filters
         document.addEventListener("DOMContentLoaded", function () {
             const itemFilter = document.getElementById("itemFilter");
             const itemTypeFilter = document.getElementById("itemTypeFilter");
+            const itemsContainer = document.getElementById("items-container");
 
+            // Options for different item types
             const bedFrameOptions = [
-            { value: "divan", text: "Divan Bases" },
-            { value: "frame", text: "Frame Beds" },
-            { value: "ottoman", text: "Ottoman Beds" }
+                { value: "divan", text: "Divan Bases" },
+                { value: "frame", text: "Frame Beds" },
+                { value: "ottoman", text: "Ottoman Beds" }
             ];
 
-          const mattressOptions = [
-            { value: "hybrid", text: "Hybrid Mattresses" },
-            { value: "spring", text: "Spring Mattresses" }
+            const mattressOptions = [
+                { value: "hybrid", text: "Hybrid Mattresses" },
+                { value: "spring", text: "Spring Mattresses" }
             ];
 
             // Disable second filter initially
@@ -108,68 +109,109 @@
 
             // Update itemTypeFilter when itemFilter changes
             itemFilter.addEventListener("change", function () {
-            const selectedItem = itemFilter.value;
+                const selectedItem = itemFilter.value;
 
                 // Clear the current options in the itemTypeFilter
-            itemTypeFilter.innerHTML = '<option value="">-- Select Item Type --</option>';
+                itemTypeFilter.innerHTML = '<option value="">-- Select Item Type --</option>';
 
-            if (selectedItem === "bedFrame") {
-            // Add bed frame options to the itemTypeFilter
-            bedFrameOptions.forEach(option => {
-                const opt = document.createElement('option');
-                opt.value = option.value;
-                opt.textContent = option.text;
-                itemTypeFilter.appendChild(opt);
+                if (selectedItem === "bedFrame") {
+                    // Add bed frame options to the itemTypeFilter
+                    bedFrameOptions.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.value;
+                        opt.textContent = option.text;
+                        itemTypeFilter.appendChild(opt);
+                    });
+
+                    itemTypeFilter.disabled = false; // Enable the second filter
+                } else if (selectedItem === "mattress") {
+                    // Add mattress options to the itemTypeFilter
+                    mattressOptions.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.value;
+                        opt.textContent = option.text;
+                        itemTypeFilter.appendChild(opt);
+                    });
+
+                    itemTypeFilter.disabled = false; // Enable the second filter
+                } else {
+                    itemTypeFilter.disabled = true; // Disable if no valid option selected
+                }
+
+                // Show items based on filter
+                filterItems();
             });
 
-            itemTypeFilter.disabled = false; // Enable the second filter
+            // Filter items when the itemTypeFilter changes
+            itemTypeFilter.addEventListener("change", filterItems);
 
-            } else if (selectedItem === "mattress") {
-                // Add mattress options to the itemTypeFilter
-                mattressOptions.forEach(option => {
-                const opt = document.createElement('option');
-                opt.value = option.value;
-                opt.textContent = option.text;
-                itemTypeFilter.appendChild(opt);
-            });
-            itemTypeFilter.disabled = false; // Enable the second filter
-            } else {
-            itemTypeFilter.disabled = true; // Keep disabled if no valid option selected
+            // Fetch and display images
+            let allImages = []; // Store all images for easy filtering
+
+            fetch('images.json')
+                .then(response => response.json())
+                .then(images => {
+                    allImages = images; // Store all images for filtering
+
+                    // Display all images initially
+                    displayItems(allImages);
+                })
+                .catch(error => console.error('Error loading images:', error));
+
+            // Function to filter and display images based on the selected filters
+            function filterItems() {
+                const selectedItem = itemFilter.value;
+                const selectedType = itemTypeFilter.value;
+
+                let filteredImages = allImages;
+
+                // Apply the selectedItem filter (Bed Frame or Mattress)
+                if (selectedItem === "bedFrame") {
+                    filteredImages = filteredImages.filter(image =>
+                        ["FrameBed", "DivanBed", "OttomanBed"].includes(image.item)
+                    );
+                } else if (selectedItem === "mattress") {
+                    filteredImages = filteredImages.filter(image =>
+                        ["HybridMattress", "SpringMattress"].includes(image.item)
+                    );
+                }
+
+                // Apply the selectedType filter (Divan, Frame, Ottoman, etc.)
+                if (selectedType) {
+                    filteredImages = filteredImages.filter(image =>
+                        image.addition.toLowerCase().includes(selectedType.toLowerCase())
+                    );
+                }
+
+                // Display the filtered images
+                displayItems(filteredImages);
             }
-        });
 
-        // Fetch the image filenames from the PHP backend
-        fetch('images.json')
-            .then(response => response.json())
-            .then(images => {
-                
-                const items = document.getElementById("items-container")
+            // Function to display the items
+            function displayItems(images) {
+                // Clear the container
+                itemsContainer.innerHTML = '';
+
+                // Add each image to the container
                 images.forEach(image => {
-                     // Create the <div> element for each item
-                        const itemDiv = document.createElement('div');
+                    const itemDiv = document.createElement('div');
                     itemDiv.classList.add('item');
 
-                    // Create the <img> element
                     const imgElement = document.createElement('img');
-                    imgElement.src = image.src;  // Set the image source
-                    imgElement.alt = `${image.size} ${image.item} ${image.addition}`;  // Set alt text
+                    imgElement.src = image.src;
+                    imgElement.alt = `${image.size} ${image.item} ${image.addition}`;
 
-                    // Create the <p> element for the item name
                     const itemName = document.createElement('p');
                     itemName.classList.add('itemName');
-                    itemName.textContent = `${image.size} ${image.item} (${image.addition})`;  // Display name
+                    itemName.textContent = `${image.size} ${image.item} (${image.addition})`;
 
-                    // Append the img and p elements to the div
                     itemDiv.appendChild(imgElement);
                     itemDiv.appendChild(itemName);
 
-                    // Append the itemDiv to the container
-                    items.appendChild(itemDiv);
+                    itemsContainer.appendChild(itemDiv);
                 });
-
-            })
-            .catch(error => console.error('Error loading images:', error));
-    });
+            }
+        });
     </script>
 </body>
 </html>
