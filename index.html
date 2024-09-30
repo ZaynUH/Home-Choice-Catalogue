@@ -47,7 +47,7 @@
     </section>
     
 
-    <section class="items">
+    <section id="items-container" class="items">
         <div class="item">
             <img src="" alt="">
             <p class="itemName">Item1</p>
@@ -143,7 +143,7 @@
             .then(response => response.json())
             .then(images => {
                 
-                const items = document.getElementsByClassName("items")
+                const items = document.getElementById("items-container")
                 images.forEach(image => {
                      // Create the <div> element for each item
                         const itemDiv = document.createElement('div');
