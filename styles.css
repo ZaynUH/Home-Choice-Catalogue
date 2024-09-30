@@ -179,4 +179,9 @@ header a {
         width: 80%; /* Reduce image size slightly for mobile */
         height: auto; /* Maintain aspect ratio */
     }
+
+    .item:hover {
+        width: 100%; /* Full width for each item */
+        margin: 10px 0;
+    }
 }
