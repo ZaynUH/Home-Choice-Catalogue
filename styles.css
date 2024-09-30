@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
@@ -7,6 +8,8 @@ body {
     color: #424242; /* Dark Grey */
 }
 
+
+/* Header Styles */
 header {
     display: flex;
     justify-content: space-between;
@@ -65,6 +68,7 @@ header a {
 }
 
 
+/* Filters Section */
 .filters {
     display: flex;
     justify-content: center; /* Center the filters horizontally */
@@ -90,6 +94,7 @@ header a {
 }
 
 
+/* Items Section */
 .items {
     display: flex;
     flex-wrap: wrap;
@@ -114,7 +119,6 @@ header a {
 }
 
 .item:hover {
-
     width: 33%;
     height: 530px;
 }
@@ -125,4 +129,54 @@ header a {
     border: solid;
     background-color: white;
     margin-bottom: 4%;
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 768px) {
+    /* Make header more mobile-friendly */
+    header {
+        display: block; /* Stack the content vertically */
+        padding: 20px;
+        text-align: center;
+    }
+
+    header p {
+        font-size: 20px; /* Smaller font for mobile */
+    }
+
+    header a {
+        font-size: 16px;
+        padding: 10px 15px; /* Smaller padding */
+        margin-top: 10px;
+    }
+
+    /* Filters */
+    .filters {
+        flex-direction: column; /* Stack filters on mobile */
+        margin-bottom: 30px;
+    }
+
+    .filter {
+        margin: 10px 0; /* Add vertical space between filters */
+    }
+
+    .filter select {
+        width: 100%; /* Full width select on mobile */
+    }
+
+    /* Items - 1 per row */
+    .items {
+        width: 100%; /* Full width container */
+        padding: 0;
+    }
+
+    .item {
+        width: 100%; /* Full width for each item */
+        margin: 10px 0;
+    }
+
+    .item img {
+        width: 80%; /* Reduce image size slightly for mobile */
+        height: auto; /* Maintain aspect ratio */
+    }
 }
