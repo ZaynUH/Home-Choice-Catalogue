@@ -1,0 +1,140 @@
+[
+    {
+        "size": "Double",
+        "item": "CoppercareMattress",
+        "addition": "N/A",
+        "src": "ItemImages/Double-CoppercareMattress.png"
+    },
+    {
+        "size": "Double",
+        "item": "DivanBed",
+        "addition": "1Drawer",
+        "src": "ItemImages/Double-DivanBed-1Drawer.png"
+    },
+    {
+        "size": "Double",
+        "item": "DivanBed",
+        "addition": "2Drawer",
+        "src": "ItemImages/Double-DivanBed-2Drawer.png"
+    },
+    {
+        "size": "Double",
+        "item": "DivanBed",
+        "addition": "NoDrawer",
+        "src": "ItemImages/Double-DivanBed-NoDrawer.png"
+    },
+    {
+        "size": "Double",
+        "item": "FrameBed",
+        "addition": "Honeycomb",
+        "src": "ItemImages/Double-FrameBed-Honeycomb.png"
+    },
+    {
+        "size": "Double",
+        "item": "FrameBed",
+        "addition": "Smooth",
+        "src": "ItemImages/Double-FrameBed-Smooth.png"
+    },
+    {
+        "size": "Double",
+        "item": "OttomanBed",
+        "addition": "Honeycomb",
+        "src": "ItemImages/Double-OttomanBed-Honeycomb.png"
+    },
+    {
+        "size": "Double",
+        "item": "OttomanBed",
+        "addition": "Smooth",
+        "src": "ItemImages/Double-OttomanBed-Smooth.png"
+    },
+    {
+        "size": "Double",
+        "item": "SpringMattress",
+        "addition": "N/A",
+        "src": "ItemImages/Double-SpringMattress.png"
+    },
+    {
+        "size": "King",
+        "item": "CoppercareMattress",
+        "addition": "N/A",
+        "src": "ItemImages/King-CoppercareMattress.png"
+    },
+    {
+        "size": "King",
+        "item": "FrameBed",
+        "addition": "Honeycomb",
+        "src": "ItemImages/King-FrameBed-Honeycomb.png"
+    },
+    {
+        "size": "King",
+        "item": "FrameBed",
+        "addition": "Smooth",
+        "src": "ItemImages/King-FrameBed-Smooth.png"
+    },
+    {
+        "size": "King",
+        "item": "OttomanBed",
+        "addition": "Honeycomb",
+        "src": "ItemImages/King-OttomanBed-Honeycomb.png"
+    },
+    {
+        "size": "King",
+        "item": "OttomanBed",
+        "addition": "Smooth",
+        "src": "ItemImages/King-OttomanBed-Smooth.png"
+    },
+    {
+        "size": "King",
+        "item": "SpringMattress",
+        "addition": "N/A",
+        "src": "ItemImages/King-SpringMattress.png"
+    },
+    {
+        "size": "Single",
+        "item": "CoppercareMattress",
+        "addition": "N/A",
+        "src": "ItemImages/Single-CoppercareMattress.png"
+    },
+    {
+        "size": "Single",
+        "item": "DivanBed",
+        "addition": "NoDrawer",
+        "src": "ItemImages/Single-DivanBed-NoDrawer.png"
+    },
+    {
+        "size": "Single",
+        "item": "Divan_Bed",
+        "addition": "1Drawer",
+        "src": "ItemImages/Single-Divan_Bed-1Drawer.png"
+    },
+    {
+        "size": "Single",
+        "item": "FrameBed",
+        "addition": "Honeycomb",
+        "src": "ItemImages/Single-FrameBed-Honeycomb.png"
+    },
+    {
+        "size": "Single",
+        "item": "FrameBed",
+        "addition": "Smooth",
+        "src": "ItemImages/Single-FrameBed-Smooth.png"
+    },
+    {
+        "size": "Single",
+        "item": "OttomanBed",
+        "addition": "Honeycomb",
+        "src": "ItemImages/Single-OttomanBed-Honeycomb.png"
+    },
+    {
+        "size": "Single",
+        "item": "OttomanBed",
+        "addition": "Smooth",
+        "src": "ItemImages/Single-OttomanBed-Smooth.png"
+    },
+    {
+        "size": "Single",
+        "item": "SpringMattress",
+        "addition": "N/A",
+        "src": "ItemImages/Single-SpringMattress.png"
+    }
+]
