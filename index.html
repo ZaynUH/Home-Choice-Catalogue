@@ -66,6 +66,18 @@
         </div>
     </section>
 
+    <section class="item-info" id="item-info-section" style="display: none;">
+        <div class="item-image">
+            <img src="" alt="Item Image" id="item-info-image">
+        </div>
+        <div class="item-details">
+            <p class="item-name">Name: <span id="item-info-name"></span></p>
+            <p class="item-size">Bed Dimensions: <span id="item-info-size"></span></p>
+            <p class="item-headSize">Headboard Dimensions: <span id="item-info-headSize"></span></p>
+            <p class="item-colours">Colours: <span id="item-info-colours"></span></p>
+        </div>
+    </section>
+    
     <!-- Adding simple script for dropdown functionality -->
     <script>
         document.getElementById('menu-btn').addEventListener('click', function(event) {
@@ -145,6 +157,12 @@
             // Filter items when the itemTypeFilter changes
             itemTypeFilter.addEventListener("change", filterItems);
 
+            const itemInfoSection = document.getElementById("item-info-section");
+            const itemInfoImage = document.getElementById("item-info-image");
+            const itemName = document.getElementById("item-info-name");
+            const itemSize = document.getElementById("item-info-size");
+            const itemHeadSize = document.getElementById("item-info-headSize");
+            const itemColours = document.getElementById("item-info-colours");
             // Fetch and display images
             let allImages = []; // Store all images for easy filtering
 
@@ -187,29 +205,37 @@
                 displayItems(filteredImages);
             }
 
-            // Function to display the items
             function displayItems(images) {
-                // Clear the container
-                itemsContainer.innerHTML = '';
+            images.forEach((image) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('item');
 
-                // Add each image to the container
-                images.forEach(image => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.classList.add('item');
+                const imgElement = document.createElement('img');
+                imgElement.src = image.src;
+                imgElement.alt = `${image.size} ${image.item} ${image.addition}`;
 
-                    const imgElement = document.createElement('img');
-                    imgElement.src = image.src;
-                    imgElement.alt = `${image.size} ${image.item} ${image.addition}`;
+                const itemNameElement = document.createElement('p');
+                itemNameElement.textContent = `${image.size} ${image.item} (${image.addition})`;
 
-                    const itemName = document.createElement('p');
-                    itemName.classList.add('itemName');
-                    itemName.textContent = `${image.size} ${image.item} (${image.addition})`;
+                itemDiv.appendChild(imgElement);
+                itemDiv.appendChild(itemNameElement);
+                itemsContainer.appendChild(itemDiv);
 
-                    itemDiv.appendChild(imgElement);
-                    itemDiv.appendChild(itemName);
-
-                    itemsContainer.appendChild(itemDiv);
+                // Add click event to show the detailed info
+                itemDiv.addEventListener('click', function () {
+                    showItemInfo(image);
                 });
+            });
+            }
+            // Function to populate the item-info section with details
+            function showItemInfo(image) {
+            itemInfoSection.style.display = 'flex'; // Make the section visible
+
+            itemInfoImage.src = image.src; // Set image source
+            itemName.textContent = `${image.size} ${image.item} (${image.addition})`; // Set item name
+            itemSize.textContent = image.size; // Example bed dimensions
+            itemHeadSize.textContent = image.headSize || "Standard"; // Example headboard dimensions
+            itemColours.textContent = image.colours || "Multiple colours available"; // Example colours
             }
         });
     </script>
