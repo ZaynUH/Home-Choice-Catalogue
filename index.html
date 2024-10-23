@@ -12,11 +12,9 @@
 <body>
     <header>
         <p>Home Choice Catalogue</p>
-        <!-- This is the clickable button for the dropdown -->
         <a href="#" id="menu-btn">=</a>
-        
-        <!-- The Dropdown Menu -->
-        <section class="dropDown" id="dropDownMenu"> 
+
+        <section class="dropDown" id="dropDownMenu">
             <ul>
                 <li><a href="#">Divan Bases</a></li>
                 <li><a href="#">Frame Beds</a></li>
@@ -26,7 +24,6 @@
             </ul>
         </section>
     </header>
-    
 
     <section class="filters">
         <div class="filter">
@@ -37,7 +34,7 @@
                 <option value="mattress">Mattresses</option>
             </select>
         </div>
-        
+
         <div class="filter">
             <p>Item Type</p>
             <select id="itemTypeFilter" disabled>
@@ -45,28 +42,13 @@
             </select>
         </div>
     </section>
-    
 
-    <section id="items-container" class="items">
-        <div class="item">
-            <img src="" alt="">
-            <p class="itemName">Item1</p>
-        </div>
-        <div class="item">
-            <img src="" alt="">
-            <p class="itemName">Item2</p>
-        </div>
-        <div class="item">
-            <img src="" alt="">
-            <p class="itemName">Item3</p>
-        </div>
-        <div class="item">
-            <img src="" alt="">
-            <p class="itemName">Item4</p>
-        </div>
-    </section>
+    <section id="items-container" class="items"></section>
 
-    <section class="item-info" id="item-info-section" style="display: none;">
+    <!-- Item info modal (centered) -->
+    <div class="overlay" id="overlay"></div>
+    <section class="item-info" id="item-info-section">
+        <button class="close-btn" id="close-btn">X</button>
         <div class="item-image">
             <img src="" alt="Item Image" id="item-info-image">
         </div>
@@ -77,8 +59,7 @@
             <p class="item-colours">Colours: <span id="item-info-colours"></span></p>
         </div>
     </section>
-    
-    <!-- Adding simple script for dropdown functionality -->
+
     <script>
         document.getElementById('menu-btn').addEventListener('click', function(event) {
             event.preventDefault(); // Prevent the default action
@@ -90,7 +71,6 @@
             }
         });
 
-        // Close the dropdown if the user clicks outside of it
         window.addEventListener('click', function(event) {
             var dropdown = document.getElementById('dropDownMenu');
             var menuBtn = document.getElementById('menu-btn');
@@ -103,6 +83,20 @@
             const itemFilter = document.getElementById("itemFilter");
             const itemTypeFilter = document.getElementById("itemTypeFilter");
             const itemsContainer = document.getElementById("items-container");
+            const overlay = document.getElementById("overlay");
+            const itemInfoSection = document.getElementById("item-info-section");
+            const itemInfoImage = document.getElementById("item-info-image");
+            const itemName = document.getElementById("item-info-name");
+            const itemSize = document.getElementById("item-info-size");
+            const itemHeadSize = document.getElementById("item-info-headSize");
+            const itemColours = document.getElementById("item-info-colours");
+            const closeBtn = document.getElementById("close-btn");
+
+            // Close item info modal
+            closeBtn.addEventListener('click', function() {
+                overlay.style.display = 'none';
+                itemInfoSection.style.display = 'none';
+            });
 
             // Options for different item types
             const bedFrameOptions = [
@@ -116,74 +110,53 @@
                 { value: "spring", text: "Spring Mattresses" }
             ];
 
-            // Disable second filter initially
             itemTypeFilter.disabled = true;
 
-            // Update itemTypeFilter when itemFilter changes
             itemFilter.addEventListener("change", function () {
                 const selectedItem = itemFilter.value;
-
-                // Clear the current options in the itemTypeFilter
                 itemTypeFilter.innerHTML = '<option value="">-- Select Item Type --</option>';
 
                 if (selectedItem === "bedFrame") {
-                    // Add bed frame options to the itemTypeFilter
                     bedFrameOptions.forEach(option => {
                         const opt = document.createElement('option');
                         opt.value = option.value;
                         opt.textContent = option.text;
                         itemTypeFilter.appendChild(opt);
                     });
-
-                    itemTypeFilter.disabled = false; // Enable the second filter
+                    itemTypeFilter.disabled = false;
                 } else if (selectedItem === "mattress") {
-                    // Add mattress options to the itemTypeFilter
                     mattressOptions.forEach(option => {
                         const opt = document.createElement('option');
                         opt.value = option.value;
                         opt.textContent = option.text;
                         itemTypeFilter.appendChild(opt);
                     });
-
-                    itemTypeFilter.disabled = false; // Enable the second filter
+                    itemTypeFilter.disabled = false;
                 } else {
-                    itemTypeFilter.disabled = true; // Disable if no valid option selected
+                    itemTypeFilter.disabled = true;
                 }
 
-                // Show items based on filter
                 filterItems();
             });
 
-            // Filter items when the itemTypeFilter changes
             itemTypeFilter.addEventListener("change", filterItems);
 
-            const itemInfoSection = document.getElementById("item-info-section");
-            const itemInfoImage = document.getElementById("item-info-image");
-            const itemName = document.getElementById("item-info-name");
-            const itemSize = document.getElementById("item-info-size");
-            const itemHeadSize = document.getElementById("item-info-headSize");
-            const itemColours = document.getElementById("item-info-colours");
-            // Fetch and display images
             let allImages = []; // Store all images for easy filtering
 
             fetch('images.json')
                 .then(response => response.json())
                 .then(images => {
-                    allImages = images; // Store all images for filtering
-
-                    // Display all images initially
+                    allImages = images;
                     displayItems(allImages);
                 })
                 .catch(error => console.error('Error loading images:', error));
 
-            // Function to filter and display images based on the selected filters
             function filterItems() {
                 const selectedItem = itemFilter.value;
                 const selectedType = itemTypeFilter.value;
 
                 let filteredImages = allImages;
 
-                // Apply the selectedItem filter (Bed Frame or Mattress)
                 if (selectedItem === "bedFrame") {
                     filteredImages = filteredImages.filter(image =>
                         ["FrameBed", "DivanBed", "OttomanBed"].includes(image.item)
@@ -194,48 +167,47 @@
                     );
                 }
 
-                // Apply the selectedType filter (Divan, Frame, Ottoman, etc.)
                 if (selectedType) {
                     filteredImages = filteredImages.filter(image =>
                         image.addition.toLowerCase().includes(selectedType.toLowerCase())
                     );
                 }
 
-                // Display the filtered images
                 displayItems(filteredImages);
             }
 
             function displayItems(images) {
-            images.forEach((image) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.classList.add('item');
+                itemsContainer.innerHTML = ""; // Clear container before displaying
+                images.forEach((image) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.classList.add('item');
 
-                const imgElement = document.createElement('img');
-                imgElement.src = image.src;
-                imgElement.alt = `${image.size} ${image.item} ${image.addition}`;
+                    const imgElement = document.createElement('img');
+                    imgElement.src = image.src;
+                    imgElement.alt = `${image.size} ${image.item} ${image.addition}`;
 
-                const itemNameElement = document.createElement('p');
-                itemNameElement.textContent = `${image.size} ${image.item} (${image.addition})`;
+                    const itemNameElement = document.createElement('p');
+                    itemNameElement.textContent = `${image.size} ${image.item} (${image.addition})`;
 
-                itemDiv.appendChild(imgElement);
-                itemDiv.appendChild(itemNameElement);
-                itemsContainer.appendChild(itemDiv);
+                    itemDiv.appendChild(imgElement);
+                    itemDiv.appendChild(itemNameElement);
+                    itemsContainer.appendChild(itemDiv);
 
-                // Add click event to show the detailed info
-                itemDiv.addEventListener('click', function () {
-                    showItemInfo(image);
+                    itemDiv.addEventListener('click', function () {
+                        showItemInfo(image);
+                    });
                 });
-            });
             }
-            // Function to populate the item-info section with details
-            function showItemInfo(image) {
-            itemInfoSection.style.display = 'flex'; // Make the section visible
 
-            itemInfoImage.src = image.src; // Set image source
-            itemName.textContent = `${image.size} ${image.item} (${image.addition})`; // Set item name
-            itemSize.textContent = image.size; // Example bed dimensions
-            itemHeadSize.textContent = image.headSize || "Standard"; // Example headboard dimensions
-            itemColours.textContent = image.colours || "Multiple colours available"; // Example colours
+            function showItemInfo(image) {
+                itemInfoSection.style.display = 'block';
+                overlay.style.display = 'block'; // Show overlay
+
+                itemInfoImage.src = image.src;
+                itemName.textContent = `${image.size} ${image.item} (${image.addition})`;
+                itemSize.textContent = image.size;
+                itemHeadSize.textContent = image.headSize || "Standard";
+                itemColours.textContent = image.colours || "Multiple colours available";
             }
         });
     </script>
